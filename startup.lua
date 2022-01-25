@@ -30,7 +30,11 @@ local function copyTable(t)
 
     -- Copy all values from the table.
     for key, value in pairs(t) do
-        newTable[key] = value
+        if type(value) == "table" then
+            newTable[key] = copyTable(value)
+        else
+            newTable[key] = value
+        end
     end
 
     -- Return the new table.
@@ -58,11 +62,7 @@ local function getNewEnviroment(override)
     -- Override the enviroment.
     if override then
         for key, value in pairs(override) do
-            if type(value) == "table" then
-                newEnv[key] = copyTable(value)
-            else
-                newEnv[key] = value
-            end
+            newEnv[key] = value
         end
     end
 
